@@ -5,4 +5,5 @@ import { User } from '../../enterprise/user.entity';
 
 export abstract class IUserRepository extends IBaseRepository<User> {
   abstract listAll(page: PaginationParams): Promise<UserVo[]>;
+  abstract findByEmail(email: string): Promise<User>;
 }

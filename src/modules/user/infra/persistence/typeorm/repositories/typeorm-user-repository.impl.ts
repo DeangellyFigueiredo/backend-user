@@ -69,7 +69,6 @@ export class TypeOrmUserRepositoryImpl implements IUserRepository {
   }
   async findAll(page: PaginationParams): Promise<User[]> {
     const userModel = await this.repository.find();
-    console.log(userModel);
     return userModel.map((user) =>
       User.instance(
         {
@@ -85,5 +84,26 @@ export class TypeOrmUserRepositoryImpl implements IUserRepository {
   }
   async delete(id: string): Promise<void> {
     await this.repository.delete(id);
+  }
+
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.repository.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) return null;
+
+    return User.instance(
+      {
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        accessLevel: user.accessLevel,
+        password: user.password,
+      },
+      new UniqueEntityID(user.id),
+    );
   }
 }

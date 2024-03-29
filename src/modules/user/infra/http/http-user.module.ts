@@ -7,6 +7,7 @@ import { CreateUserUseCase } from '../../domain/application/use-cases/create-use
 import { DeleteUserUseCase } from '../../domain/application/use-cases/delete-user.use-case';
 import { FindUserByIdUseCase } from '../../domain/application/use-cases/find-user-by-id.use-case';
 import { UpdateUserUseCase } from '../../domain/application/use-cases/update-user.use-case';
+import { FindUserByEmailUseCase } from '../../domain/application/use-cases/find-user-by-email.use-case';
 
 @Module({
   imports: [PersistenceUserModule],
@@ -46,6 +47,12 @@ import { UpdateUserUseCase } from '../../domain/application/use-cases/update-use
         findUserByIdUseCase: FindUserByIdUseCase,
       ) => new UpdateUserUseCase(userRepository, findUserByIdUseCase),
       inject: [TypeOrmUserRepositoryImpl, FindUserByIdUseCase],
+    },
+    {
+      provide: FindUserByEmailUseCase,
+      useFactory: (userRepository: TypeOrmUserRepositoryImpl) =>
+        new FindUserByEmailUseCase(userRepository),
+      inject: [TypeOrmUserRepositoryImpl],
     },
   ],
 })
