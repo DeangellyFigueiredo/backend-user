@@ -1,8 +1,6 @@
 {
-  "database" : "postgresql://postgresql:teste-dean@localhost:5445/users",
-  "type" : "postgres",
-  "synchronize" : true,
-  "entities" :[
-    "dist/entity/**/*.js"
-  ]
+  "database": "postgres://postgres:postgres-password@localhost:5432/user",
+  "type": "postgres",
+  "synchronize": true,
+  "entities": ["dist/entity/**/*.js"]
 }
