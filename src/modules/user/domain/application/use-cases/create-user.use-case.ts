@@ -11,16 +11,15 @@ interface CreateUserUseCaseRequest {
   accessLevel: EAccessLevel;
 }
 
-type CreateUserUseCaseResponse = Either<EmailAlreadyRegisteredError, {
-  message : string
-}>;
+type CreateUserUseCaseResponse = Either<
+  EmailAlreadyRegisteredError,
+  {
+    message: string;
+  }
+>;
 
 export class CreateUserUseCase {
-
-  constructor(   
-     private userRepositor: IUserRepository
-    ){
-  }
+  constructor(private readonly userRepositor: IUserRepository) {}
 
   async execute({
     name,
@@ -39,9 +38,8 @@ export class CreateUserUseCase {
 
     const createUser = await this.userRepositor.create(user);
 
-
-     return success({
+    return success({
       message: 'User created successfully',
-     });
+    });
   }
 }

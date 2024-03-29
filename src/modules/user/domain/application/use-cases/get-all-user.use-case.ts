@@ -1,31 +1,28 @@
 import { Either, success } from 'src/core/types/either';
-import { EAccessLevel, User } from '../../enterprise/user.entity';
-import { EmailAlreadyRegisteredError } from './erros/email-already-registered-error';
 import { IUserRepository } from '../repositories/user.repository.contract';
+import { UserVo } from '../../enterprise/value-objects/user-vo';
 
 interface GetUserAllUserCaseRequest {
-  page : number;
+  page: number;
 }
 
-type GetUserAllUserCaseResponse = Either<null, {
-  user : User[]
-}>;
+type GetUserAllUserCaseResponse = Either<
+  null,
+  {
+    users: UserVo[];
+  }
+>;
 
 export class GetAllUserUseCase {
+  constructor(private readonly userRepositor: IUserRepository) {}
 
-  constructor(   
-     private userRepositor: IUserRepository
-    ){
-  }
-
-  async execute({page} : GetUserAllUserCaseRequest): Promise<GetUserAllUserCaseResponse> {
-    
-
-    const getUserAll = await this.userRepositor.findAll({page});
-
-
-     return success({
-      user: getUserAll,
-     });
+  async execute({
+    page,
+  }: GetUserAllUserCaseRequest): Promise<GetUserAllUserCaseResponse> {
+    const users = await this.userRepositor.listAll({ page });
+    console.log(users);
+    return success({
+      users,
+    });
   }
 }
