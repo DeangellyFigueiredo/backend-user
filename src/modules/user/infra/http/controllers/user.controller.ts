@@ -19,6 +19,8 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserPresenter } from '../presenters/user.presenters';
 import { DeleteUserUseCase } from 'src/modules/user/domain/application/use-cases/delete-user.use-case';
 import { UserNotFoundError } from 'src/modules/user/domain/application/use-cases/erros/user-not-found.error';
+import { UpdateUserUseCase } from 'src/modules/user/domain/application/use-cases/update-user.use-case';
+import { UpdateUserDto } from '../dtos/update-user.dto';
 
 @ApiTags('User')
 @Controller('user')
@@ -27,6 +29,7 @@ export class UserController {
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly getAllUserUseCase: GetAllUserUseCase,
     private readonly deleteUserUseCase: DeleteUserUseCase,
+    private readonly updateUserUseCase: UpdateUserUseCase,
   ) {}
   @ApiOperation({
     summary: 'Criar usuário',
@@ -62,7 +65,7 @@ export class UserController {
   }
   @ApiOperation({
     summary: 'Listar usuários',
-    description: 'Utilize este endpoint para listar os usários',
+    description: 'Utilize este endpoint para listar os usuários',
   })
   @HttpCode(200)
   @Get()
@@ -77,15 +80,43 @@ export class UserController {
     return data;
   }
 
+  @ApiOperation({
+    summary: 'Deletar usuários',
+    description: 'Utilize este endpoint para deletar um usuário',
+  })
+  @HttpCode(200)
   @Delete(':id')
   async delete(@Param('id') id: string) {
     const result = await this.deleteUserUseCase.execute({ id });
 
     if (result.isFailure()) {
-      console.log('aqui');
       throw new BadRequestException(result.value.message);
     }
 
     return result.value;
+  }
+
+  @ApiOperation({
+    summary: 'Atualizar usuário',
+    description: 'Utilize este endpoint para atualizar um usuário',
+  })
+  @HttpCode(200)
+  @Patch(':id')
+  async update(@Param('id') id: string, @Body() body: UpdateUserDto) {
+    const { name, surname, accessLevel } = body;
+    const result = await this.updateUserUseCase.execute({
+      id,
+      name,
+      surname,
+      accessLevel,
+    });
+
+    if (result.isFailure()) {
+      throw new BadRequestException(result.value.message);
+    }
+
+    return {
+      message: 'User updated successfully',
+    };
   }
 }

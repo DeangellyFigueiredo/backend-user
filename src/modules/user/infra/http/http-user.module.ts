@@ -6,6 +6,7 @@ import { TypeOrmUserRepositoryImpl } from '../persistence/typeorm/repositories/t
 import { CreateUserUseCase } from '../../domain/application/use-cases/create-user.use-case';
 import { DeleteUserUseCase } from '../../domain/application/use-cases/delete-user.use-case';
 import { FindUserByIdUseCase } from '../../domain/application/use-cases/find-user-by-id.use-case';
+import { UpdateUserUseCase } from '../../domain/application/use-cases/update-user.use-case';
 
 @Module({
   imports: [PersistenceUserModule],
@@ -35,6 +36,15 @@ import { FindUserByIdUseCase } from '../../domain/application/use-cases/find-use
         userRepository: TypeOrmUserRepositoryImpl,
         findUserByIdUseCase: FindUserByIdUseCase,
       ) => new DeleteUserUseCase(userRepository, findUserByIdUseCase),
+      inject: [TypeOrmUserRepositoryImpl, FindUserByIdUseCase],
+    },
+
+    {
+      provide: UpdateUserUseCase,
+      useFactory: (
+        userRepository: TypeOrmUserRepositoryImpl,
+        findUserByIdUseCase: FindUserByIdUseCase,
+      ) => new UpdateUserUseCase(userRepository, findUserByIdUseCase),
       inject: [TypeOrmUserRepositoryImpl, FindUserByIdUseCase],
     },
   ],

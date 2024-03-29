@@ -25,9 +25,9 @@ export class DeleteUserUseCase {
   }: DeleteUserUseCaseRequest): Promise<DeleteUserUseCaseResponse> {
     console.log(id);
     const user = await this.findUserByIdUseCase.execute({ id });
-    console.log(user);
+
     if (user.isFailure()) {
-      return failure(new UserNotFoundError());
+      return failure(user.value);
     }
 
     await this.userRepositor.delete(id);

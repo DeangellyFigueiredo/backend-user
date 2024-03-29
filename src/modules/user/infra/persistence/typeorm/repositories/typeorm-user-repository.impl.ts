@@ -36,13 +36,16 @@ export class TypeOrmUserRepositoryImpl implements IUserRepository {
 
     if (!user) return null;
 
-    return User.instance({
-      name: user.name,
-      surname: user.surname,
-      email: user.email,
-      accessLevel: user.accessLevel,
-      password: user.password,
-    });
+    return User.instance(
+      {
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        accessLevel: user.accessLevel,
+        password: user.password,
+      },
+      new UniqueEntityID(user.id),
+    );
   }
 
   async create(data: User): Promise<void> {
@@ -56,20 +59,28 @@ export class TypeOrmUserRepositoryImpl implements IUserRepository {
       password: data.password,
     });
   }
-  save(data: User): Promise<void> {
-    throw new Error('Method not implemented.');
+  async save(data: User): Promise<void> {
+    console.log(data);
+    await this.repository.update(data.id.toValue(), {
+      name: data.name,
+      surname: data.surname,
+      accessLevel: data.accessLevel,
+    });
   }
   async findAll(page: PaginationParams): Promise<User[]> {
     const userModel = await this.repository.find();
     console.log(userModel);
     return userModel.map((user) =>
-      User.instance({
-        name: user.name,
-        surname: user.surname,
-        email: user.email,
-        accessLevel: user.accessLevel,
-        password: user.password,
-      }),
+      User.instance(
+        {
+          name: user.name,
+          surname: user.surname,
+          email: user.email,
+          accessLevel: user.accessLevel,
+          password: user.password,
+        },
+        new UniqueEntityID(user.id),
+      ),
     );
   }
   async delete(id: string): Promise<void> {
