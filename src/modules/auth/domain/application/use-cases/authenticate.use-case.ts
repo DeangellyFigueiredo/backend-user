@@ -29,15 +29,12 @@ export class AuthenticateUseCase {
     if (!token) {
       return failure(new TokenNotProvidesError());
     }
-
     const tokenExtracted = await this.extractTokenUseCase.execute({
       tokenToExtract: token,
     });
-
     const decodedTokenResult = await this.verifyTokenUseCase.execute({
       token: tokenExtracted.token,
     });
-
     if (decodedTokenResult.isFailure()) {
       return failure(new TokenInvalidError());
     }

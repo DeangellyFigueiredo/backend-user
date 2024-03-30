@@ -4,16 +4,20 @@ import {
   ExecutionContext,
   HttpException,
   HttpStatus,
+  Inject,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from './decorators/public.decorator';
 import { ROLES_KEY } from './decorators/roles.decorator';
+import { AuthenticateUseCase } from 'src/modules/auth/domain/application/use-cases/authenticate.use-case';
+import { DecodeTokenUseCase } from 'src/modules/auth/domain/application/use-cases/decode-jwt.use-case';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
-    private readonly authService: AuthService,
+    private readonly authenticateUseCase: AuthenticateUseCase,
+    private readonly decodeTokenUseCase: DecodeTokenUseCase,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -33,9 +37,11 @@ export class RoleGuard implements CanActivate {
     if (!extractJwt) {
       throw new HttpException('Não autorizado', HttpStatus.UNAUTHORIZED);
     }
-    await this.authService.authenticate(extractJwt);
+    await this.authenticateUseCase.execute({ token: extractJwt });
+    const user = await this.decodeTokenUseCase.execute({ token: extractJwt });
 
-    const user = await this.authService.decodeJWT(extractJwt);
+    if (user.isFailure())
+      throw new HttpException('Não autorizado', HttpStatus.UNAUTHORIZED);
 
     const requiredRoles = this.reflector.getAllAndOverride<string[]>(
       ROLES_KEY,
@@ -44,13 +50,20 @@ export class RoleGuard implements CanActivate {
     if (!requiredRoles) {
       return true;
     }
-    if (!requiredRoles.some((role) => user.permissions?.includes(role))) {
+    console.log(user.value.decodedToken.permissions);
+    if (
+      !requiredRoles.some((role) =>
+        user.value.decodedToken.permissions?.includes(role),
+      )
+    ) {
       throw new HttpException(
         'Usuário não tem permissão para acessar este recurso',
         HttpStatus.UNAUTHORIZED,
       );
     }
 
-    return requiredRoles.some((role) => user.permissions?.includes(role));
+    return requiredRoles.some((role) =>
+      user.value.decodedToken.permissions?.includes(role),
+    );
   }
 }

@@ -2,7 +2,7 @@ import { Either, success } from 'src/core/types/either';
 import { EAccessLevel, User } from '../../enterprise/user.entity';
 import { EmailAlreadyRegisteredError } from './erros/email-already-registered-error';
 import { IUserRepository } from '../repositories/user.repository.contract';
-
+import * as bcrypt from 'bcrypt';
 interface CreateUserUseCaseRequest {
   name: string;
   surname: string;
@@ -32,7 +32,7 @@ export class CreateUserUseCase {
       name,
       surname,
       email,
-      password,
+      password: bcrypt.hashSync(password, 10),
       accessLevel,
     });
 

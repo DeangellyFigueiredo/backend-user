@@ -21,6 +21,8 @@ import { DeleteUserUseCase } from 'src/modules/user/domain/application/use-cases
 import { UserNotFoundError } from 'src/modules/user/domain/application/use-cases/erros/user-not-found.error';
 import { UpdateUserUseCase } from 'src/modules/user/domain/application/use-cases/update-user.use-case';
 import { UpdateUserDto } from '../dtos/update-user.dto';
+import { Public } from 'src/authentication/decorators/public.decorator';
+import { Roles } from 'src/authentication/decorators/roles.decorator';
 
 @ApiTags('User')
 @Controller('user')
@@ -35,8 +37,8 @@ export class UserController {
     summary: 'Criar usuário',
     description: 'Utilize este endpoint para criar um usário',
   })
-  @HttpCode(200)
   @HttpCode(201)
+  @Roles('create-users')
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     const { name, surname, email, password, accessLevel } = createUserDto;
@@ -68,6 +70,7 @@ export class UserController {
     description: 'Utilize este endpoint para listar os usuários',
   })
   @HttpCode(200)
+  @Roles('list-users')
   @Get()
   async findAll(@Query('page') page: number) {
     const result = await this.getAllUserUseCase.execute({ page });
@@ -85,6 +88,7 @@ export class UserController {
     description: 'Utilize este endpoint para deletar um usuário',
   })
   @HttpCode(200)
+  @Roles('delete-users')
   @Delete(':id')
   async delete(@Param('id') id: string) {
     const result = await this.deleteUserUseCase.execute({ id });
@@ -101,6 +105,7 @@ export class UserController {
     description: 'Utilize este endpoint para atualizar um usuário',
   })
   @HttpCode(200)
+  @Roles('update-users')
   @Patch(':id')
   async update(@Param('id') id: string, @Body() body: UpdateUserDto) {
     const { name, surname, accessLevel } = body;

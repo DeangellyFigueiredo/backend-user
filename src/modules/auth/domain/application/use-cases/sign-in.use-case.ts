@@ -32,8 +32,8 @@ export class SignInUseCase {
     password,
   }: SignInUseCaseRequest): Promise<SignInUseCaseResponse> {
     const existsUser = await this.findUserByEmailUseCase.execute({ email });
-
     if (existsUser.isFailure()) {
+      console.log('EmailOrPasswordInvalidError');
       return failure(new EmailOrPasswordInvalidError());
     }
 
@@ -42,7 +42,7 @@ export class SignInUseCase {
       hashedPassword: existsUser.value.user.password,
     });
 
-    if (!comparePasswordResponse.value) {
+    if (!comparePasswordResponse.value.isPasswordValid) {
       return failure(new EmailOrPasswordInvalidError());
     }
 
