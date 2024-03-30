@@ -7,9 +7,10 @@ import { InvalidTypeUUIDError } from './erros/invalid-type-uuid.error';
 
 interface UpdateUserUseCaseRequest {
   id: string;
-  name: string;
-  surname: string;
-  accessLevel: EAccessLevel;
+  name?: string;
+  surname?: string;
+  accessLevel?: EAccessLevel;
+  isActive?: boolean;
 }
 
 type UpdateUserUseCaseResponse = Either<
@@ -30,16 +31,31 @@ export class UpdateUserUseCase {
     name,
     surname,
     accessLevel,
+    isActive,
   }: UpdateUserUseCaseRequest): Promise<UpdateUserUseCaseResponse> {
     const user = await this.findUserByIdUseCase.execute({ id });
     if (user.isFailure()) {
       return failure(user.value);
     }
 
-    user.value.user.name = name;
-    user.value.user.surname = surname;
-    user.value.user.accessLevel = accessLevel;
+    if (name !== undefined) {
+      user.value.user.name = name;
+    }
 
+    if (surname !== undefined) {
+      user.value.user.surname = surname;
+    }
+
+    if (accessLevel !== undefined) {
+      user.value.user.accessLevel = accessLevel;
+    }
+
+    if (isActive !== undefined) {
+      console.log(isActive);
+      user.value.user.isActive = isActive;
+    }
+
+    console.log(user.value.user);
     await this.userRepositor.save(user.value.user);
 
     return success({

@@ -33,7 +33,6 @@ export class SignInUseCase {
   }: SignInUseCaseRequest): Promise<SignInUseCaseResponse> {
     const existsUser = await this.findUserByEmailUseCase.execute({ email });
     if (existsUser.isFailure()) {
-      console.log('EmailOrPasswordInvalidError');
       return failure(new EmailOrPasswordInvalidError());
     }
 

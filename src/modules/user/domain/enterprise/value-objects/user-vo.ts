@@ -8,6 +8,7 @@ export interface UserProps {
   surname: string;
   email: string;
   accessLevel: EAccessLevel;
+  isActive: boolean;
   createdAt: Date;
   updatedAt?: Date | null;
 }
@@ -43,5 +44,9 @@ export class UserVo extends ValueObject<UserProps> {
 
   get updatedAt() {
     return this.props.updatedAt;
+  }
+
+  get isActive() {
+    return this.props.isActive;
   }
 }

@@ -7,6 +7,7 @@ export interface UserProps {
   email: string;
   password: string;
   accessLevel: EAccessLevel;
+  isActive?: boolean;
   createdAt: Date;
   updatedAt?: Date | null;
 }
@@ -14,14 +15,19 @@ export interface UserProps {
 export enum EAccessLevel {
   ADMIN = 1,
   COMMON = 2,
+  GUEST = 3,
 }
 
 export class User extends Entity<UserProps> {
-  static instance(props: Omit<UserProps, 'createdAt'>, id?: UniqueEntityID) {
+  static instance(
+    props: Omit<UserProps, 'createdAt' | 'isActive'>,
+    id?: UniqueEntityID,
+  ) {
     return new User(
       {
         ...props,
         createdAt: new Date(),
+        isActive: true,
       },
       id,
     );
@@ -45,6 +51,10 @@ export class User extends Entity<UserProps> {
 
   get accessLevel() {
     return this.props.accessLevel;
+  }
+
+  get isActive() {
+    return this.props.isActive;
   }
 
   get createdAt() {
@@ -81,6 +91,11 @@ export class User extends Entity<UserProps> {
 
   set accessLevel(accessLevel: EAccessLevel) {
     this.props.accessLevel = accessLevel;
+    this.touch();
+  }
+
+  set isActive(isActive: boolean) {
+    this.props.isActive = isActive;
     this.touch();
   }
 }

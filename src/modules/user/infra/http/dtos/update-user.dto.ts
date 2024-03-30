@@ -1,7 +1,9 @@
 import {
+  IsBoolean,
   IsDefined,
   IsEnum,
   IsNumber,
+  IsOptional,
   IsString,
   MaxLength,
 } from 'class-validator';
@@ -9,14 +11,17 @@ import { EAccessLevel } from 'src/modules/user/domain/enterprise/user.entity';
 
 export class UpdateUserDto {
   @IsString()
-  @IsDefined()
+  @IsOptional()
   @MaxLength(120)
   readonly name: string;
   @IsString()
-  @IsDefined()
+  @IsOptional()
   @MaxLength(120)
   readonly surname: string;
+  @IsOptional()
   @IsEnum(EAccessLevel, { message: 'Invalid access level' })
-  @IsDefined()
   readonly accessLevel: number;
+  @IsOptional()
+  @IsBoolean()
+  readonly isActive: boolean;
 }

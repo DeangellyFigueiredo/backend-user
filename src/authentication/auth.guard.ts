@@ -50,7 +50,6 @@ export class RoleGuard implements CanActivate {
     if (!requiredRoles) {
       return true;
     }
-    console.log(user.value.decodedToken.permissions);
     if (
       !requiredRoles.some((role) =>
         user.value.decodedToken.permissions?.includes(role),

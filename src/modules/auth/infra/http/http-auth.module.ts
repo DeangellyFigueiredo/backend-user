@@ -91,7 +91,5 @@ import { VerifyTokenUseCase } from '../../domain/application/use-cases/verify-to
   ],
 })
 export class HttpAuthModule {
-  constructor() {
-    console.log('HttpAuthModule');
-  }
+  constructor() {}
 }

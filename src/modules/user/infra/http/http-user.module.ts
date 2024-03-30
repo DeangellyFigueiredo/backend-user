@@ -8,6 +8,7 @@ import { DeleteUserUseCase } from '../../domain/application/use-cases/delete-use
 import { FindUserByIdUseCase } from '../../domain/application/use-cases/find-user-by-id.use-case';
 import { UpdateUserUseCase } from '../../domain/application/use-cases/update-user.use-case';
 import { FindUserByEmailUseCase } from '../../domain/application/use-cases/find-user-by-email.use-case';
+import { DataToGraphcUseCase } from '../../domain/application/use-cases/data-to-graph.use-case';
 
 @Module({
   imports: [PersistenceUserModule],
@@ -53,6 +54,12 @@ import { FindUserByEmailUseCase } from '../../domain/application/use-cases/find-
       useFactory: (userRepository: TypeOrmUserRepositoryImpl) =>
         new FindUserByEmailUseCase(userRepository),
       inject: [TypeOrmUserRepositoryImpl],
+    },
+    {
+      provide: DataToGraphcUseCase,
+      useFactory: (getAllUserUseCase: GetAllUserUseCase) =>
+        new DataToGraphcUseCase(getAllUserUseCase),
+      inject: [GetAllUserUseCase],
     },
   ],
 })

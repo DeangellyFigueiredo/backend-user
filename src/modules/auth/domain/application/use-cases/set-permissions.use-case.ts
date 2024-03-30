@@ -25,10 +25,11 @@ export class SetPermissionsUseCase {
           'list-users',
           'delete-users',
           'update-users',
+          'graph-users',
         ],
       });
 
-    if (role === EAccessLevel.COMMON)
+    if (role === EAccessLevel.COMMON || role === EAccessLevel.GUEST)
       return success({
         permissions: ['list-users'],
       });

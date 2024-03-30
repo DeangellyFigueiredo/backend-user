@@ -14,6 +14,8 @@ export class UserModel {
   password: string;
   @Column('int')
   accessLevel: number;
+  @Column('boolean')
+  isActive: boolean;
   @Column('timestamp')
   createdAt: Date;
 }

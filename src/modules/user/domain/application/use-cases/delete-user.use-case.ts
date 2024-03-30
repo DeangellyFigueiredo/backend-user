@@ -23,7 +23,6 @@ export class DeleteUserUseCase {
   async execute({
     id,
   }: DeleteUserUseCaseRequest): Promise<DeleteUserUseCaseResponse> {
-    console.log(id);
     const user = await this.findUserByIdUseCase.execute({ id });
 
     if (user.isFailure()) {

@@ -18,11 +18,10 @@ import { GetAllUserUseCase } from 'src/modules/user/domain/application/use-cases
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserPresenter } from '../presenters/user.presenters';
 import { DeleteUserUseCase } from 'src/modules/user/domain/application/use-cases/delete-user.use-case';
-import { UserNotFoundError } from 'src/modules/user/domain/application/use-cases/erros/user-not-found.error';
 import { UpdateUserUseCase } from 'src/modules/user/domain/application/use-cases/update-user.use-case';
 import { UpdateUserDto } from '../dtos/update-user.dto';
-import { Public } from 'src/authentication/decorators/public.decorator';
 import { Roles } from 'src/authentication/decorators/roles.decorator';
+import { DataToGraphcUseCase } from 'src/modules/user/domain/application/use-cases/data-to-graph.use-case';
 
 @ApiTags('User')
 @Controller('user')
@@ -32,6 +31,7 @@ export class UserController {
     private readonly getAllUserUseCase: GetAllUserUseCase,
     private readonly deleteUserUseCase: DeleteUserUseCase,
     private readonly updateUserUseCase: UpdateUserUseCase,
+    private readonly dataToGraphcUseCase: DataToGraphcUseCase,
   ) {}
   @ApiOperation({
     summary: 'Criar usuário',
@@ -72,8 +72,8 @@ export class UserController {
   @HttpCode(200)
   @Roles('list-users')
   @Get()
-  async findAll(@Query('page') page: number) {
-    const result = await this.getAllUserUseCase.execute({ page });
+  async findAll() {
+    const result = await this.getAllUserUseCase.execute();
 
     if (result.isFailure()) {
       throw new BadRequestException();
@@ -108,12 +108,13 @@ export class UserController {
   @Roles('update-users')
   @Patch(':id')
   async update(@Param('id') id: string, @Body() body: UpdateUserDto) {
-    const { name, surname, accessLevel } = body;
+    const { name, surname, accessLevel, isActive } = body;
     const result = await this.updateUserUseCase.execute({
       id,
       name,
       surname,
       accessLevel,
+      isActive,
     });
 
     if (result.isFailure()) {
@@ -123,5 +124,16 @@ export class UserController {
     return {
       message: 'User updated successfully',
     };
+  }
+
+  @ApiOperation({
+    summary: 'Gráfico de usuários',
+    description: 'Utilize este endpoint para gerar um gráfico de usuários',
+  })
+  @Roles('graph-users')
+  @Get('graph')
+  async graph() {
+    const result = await this.dataToGraphcUseCase.execute();
+    return result.value;
   }
 }

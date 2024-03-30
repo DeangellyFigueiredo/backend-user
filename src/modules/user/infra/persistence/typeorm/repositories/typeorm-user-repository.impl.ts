@@ -12,17 +12,21 @@ export class TypeOrmUserRepositoryImpl implements IUserRepository {
     @InjectRepository(UserModel) private repository: Repository<UserModel>,
   ) {}
 
-  async listAll(page: PaginationParams): Promise<UserVo[]> {
-    const users = await this.repository.find();
-    console.log(users);
+  async listAll(): Promise<UserVo[]> {
+    const users = await this.repository.find({
+      order: {
+        createdAt: 'DESC',
+      },
+    });
     return users.map((user) =>
       UserVo.instance({
         name: user.name,
         email: user.email,
         surname: user.surname,
         userId: new UniqueEntityID(user.id),
-        createdAt: user.createdAt,
         accessLevel: user.accessLevel,
+        isActive: user.isActive,
+        createdAt: user.createdAt,
       }),
     );
   }
@@ -55,6 +59,7 @@ export class TypeOrmUserRepositoryImpl implements IUserRepository {
       surname: data.surname,
       email: data.email,
       accessLevel: data.accessLevel,
+      isActive: data.isActive,
       createdAt: new Date(),
       password: data.password,
     });
@@ -65,6 +70,7 @@ export class TypeOrmUserRepositoryImpl implements IUserRepository {
       name: data.name,
       surname: data.surname,
       accessLevel: data.accessLevel,
+      isActive: data.isActive,
     });
   }
   async findAll(page: PaginationParams): Promise<User[]> {
@@ -90,6 +96,7 @@ export class TypeOrmUserRepositoryImpl implements IUserRepository {
     const user = await this.repository.findOne({
       where: {
         email,
+        isActive: true,
       },
     });
 
