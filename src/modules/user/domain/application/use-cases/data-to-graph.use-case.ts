@@ -26,32 +26,54 @@ export class DataToGraphcUseCase {
 }
 
 function MapGraphData(userVoData: UserVo[]) {
-  const transformedData = userVoData.reduce((accumulator, currentUser) => {
-    const accessLevel = EAccessLevel[currentUser.accessLevel];
-    const isActive = currentUser.isActive;
+  const transformedData = userVoData.reduce(
+    (accumulator, currentUser) => {
+      const accessLevel = EAccessLevel[currentUser.accessLevel];
+      const isActive = currentUser.isActive;
 
-    const existingRole = accumulator.find(
-      (item) => item.role === accessLevel.toString(),
-    );
+      const existingRole = accumulator.find(
+        (item) => item.role.toString() === accessLevel.toString(),
+      );
 
-    if (existingRole) {
-      existingRole.quantity++;
-      if (isActive) {
-        existingRole.quantityActive++;
+      if (existingRole) {
+        existingRole.quantity++;
+        if (isActive) {
+          existingRole.quantityActive++;
+        } else {
+          existingRole.quantityInactive++;
+        }
       } else {
-        existingRole.quantityInactive++;
+        const newRole = {
+          role: EAccessLevel[currentUser.accessLevel],
+          quantity: 1,
+          quantityActive: isActive ? 1 : 0,
+          quantityInactive: isActive ? 0 : 1,
+        };
+        accumulator.push(newRole);
       }
-    } else {
-      const newRole = {
-        role: accessLevel,
-        quantity: 1,
-        quantityActive: isActive ? 1 : 0,
-        quantityInactive: isActive ? 0 : 1,
-      };
-      accumulator.push(newRole);
-    }
 
-    return accumulator;
-  }, []);
+      return accumulator;
+    },
+    [
+      {
+        role: 'ADMIN',
+        quantity: 0,
+        quantityActive: 0,
+        quantityInactive: 0,
+      },
+      {
+        role: 'GUEST',
+        quantity: 0,
+        quantityActive: 0,
+        quantityInactive: 0,
+      },
+      {
+        role: 'COMMON',
+        quantity: 0,
+        quantityActive: 0,
+        quantityInactive: 0,
+      },
+    ],
+  );
   return transformedData;
 }

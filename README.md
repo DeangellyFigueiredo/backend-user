@@ -1,75 +1,215 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# BACKEND USER
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+![INDT](./indt-removebg-preview.png)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Este repositório contém as informações necessárias para facilitar deploy e instalação, do back-end do sistema User no seu ambiente de desenvolvimento ou de produção.
 
-## Description
+# Tabela de conteúdos
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+<!--ts-->
 
-## Installation
+- [Tecnologias](#1-Tecnlogias)
+- [Estrutura de pastas](#2-estrutura-de-pastas)
+- [Pré-requisitos](#3-pré-requisitos)
+- [Clonando o repositório de back-end do projeto BACKEND USER](#4-clonando-o-repositório-de-back-end-do-projeto-backend-user)
+- [Configurações](#5-configurações)
+- [Configuração de deploy back-end do projeto BACKEND USER usando o Docker](#6-configuração-de-deploy-back-end-do-projeto-backend-user-usando-o-docker)
 
-```bash
-$ yarn install
-```
+<!--te-->
 
-## Running the app
+## 1. Tecnologias
+
+- Typescript
+- Swagger
+- Nestjs
+- Postgresql
+- TypeORM
+- Docker
+- Docker compose
+
+## 2. Estrutura de pastas
 
 ```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+📦 BACKEND-USER
+📦src
+ ┣ 📂authentication
+ ┃ ┣ 📂decorators
+ ┃ ┃ ┣ 📜private.decorator.ts
+ ┃ ┃ ┣ 📜public.decorator.ts
+ ┃ ┃ ┗ 📜roles.decorator.ts
+ ┃ ┗ 📜auth.guard.ts
+ ┣ 📂common
+ ┃ ┗ 📂database
+ ┃ ┃ ┗ 📂typeorm
+ ┃ ┃ ┃ ┗ 📜typeorm.module.ts
+ ┣ 📂core
+ ┃ ┣ 📂entities
+ ┃ ┃ ┣ 📜entity.ts
+ ┃ ┃ ┣ 📜unique-entity-id.ts
+ ┃ ┃ ┗ 📜value-object.ts
+ ┃ ┣ 📂erros
+ ┃ ┃ ┗ 📜use-case-error.contract.ts
+ ┃ ┣ 📂repositories
+ ┃ ┃ ┣ 📜base-repository.contract.ts
+ ┃ ┃ ┗ 📜pagination-params.contract.ts
+ ┃ ┣ 📂types
+ ┃ ┃ ┣ 📜either.spec.ts
+ ┃ ┃ ┣ 📜either.ts
+ ┃ ┃ ┗ 📜optional.ts
+ ┃ ┗ 📂utils
+ ┣ 📂modules
+ ┃ ┣ 📂auth
+ ┃ ┃ ┣ 📂domain
+ ┃ ┃ ┃ ┗ 📂application
+ ┃ ┃ ┃ ┃ ┗ 📂use-cases
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂errors
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜email-or-password-invalid-error.ts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜role-not-authorized-error.ts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜token-expired-error.ts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜token-invalid-error.ts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜token-not-provided-error copy.ts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜authenticate.use-case.ts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜compare-password.use-case.ts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜decode-jwt.use-case.ts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜extract-token.use-case.ts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜generate-token.use-case.ts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜set-permissions.use-case.ts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜sign-in.use-case.ts
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜verify-token.use-case.ts
+ ┃ ┃ ┗ 📂infra
+ ┃ ┃ ┃ ┗ 📂http
+ ┃ ┃ ┃ ┃ ┣ 📂controllers
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜auth.controller.ts
+ ┃ ┃ ┃ ┃ ┣ 📂dtos
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜sign-in.dto.ts
+ ┃ ┃ ┃ ┃ ┣ 📂presenters
+ ┃ ┃ ┃ ┃ ┗ 📜http-auth.module.ts
+ ┃ ┗ 📂user
+ ┃ ┃ ┣ 📂domain
+ ┃ ┃ ┃ ┣ 📂application
+ ┃ ┃ ┃ ┃ ┣ 📂repositories
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜user.repository.contract.ts
+ ┃ ┃ ┃ ┃ ┗ 📂use-cases
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂erros
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜email-already-registered-error.ts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜invalid-type-uuid.error.ts
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜user-not-found.error.ts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜create-user.use-case.ts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜data-to-graph.use-case.ts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜delete-user.use-case.ts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜find-user-by-email.use-case.ts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜find-user-by-id.use-case.ts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜get-all-user.use-case.ts
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜update-user.use-case.ts
+ ┃ ┃ ┃ ┗ 📂enterprise
+ ┃ ┃ ┃ ┃ ┣ 📂value-objects
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜user-vo.ts
+ ┃ ┃ ┃ ┃ ┣ 📜user.entity.spec.ts
+ ┃ ┃ ┃ ┃ ┗ 📜user.entity.ts
+ ┃ ┃ ┗ 📂infra
+ ┃ ┃ ┃ ┣ 📂http
+ ┃ ┃ ┃ ┃ ┣ 📂controllers
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜user.controller.ts
+ ┃ ┃ ┃ ┃ ┣ 📂dtos
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜create-user.dto.ts
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜update-user.dto.ts
+ ┃ ┃ ┃ ┃ ┣ 📂presenters
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜user.presenters.ts
+ ┃ ┃ ┃ ┃ ┗ 📜http-user.module.ts
+ ┃ ┃ ┃ ┗ 📂persistence
+ ┃ ┃ ┃ ┃ ┣ 📂typeorm
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂models
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜user.model.ts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂repositories
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜typeorm-user-repository.impl.ts
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜persistence-user.module.ts
+ ┃ ┃ ┃ ┃ ┗ 📜user.module.ts
+ ┣ 📜app.module.ts
+ ┗ 📜main.ts
 ```
 
-## Test
+## 3. Pré-requisitos
+
+- Sistema operacional Linux Ubuntu 22 lts ou Windows 11
+
+- Instalar VS CODE para visualizar os projetos
+
+- Instalar Node versão 21.7.0
+
+- Instalar Yarn versão 1.22.18 LTS (ou versão superior LTS)
+
+- Instalar a versão Git 2.25.1 LTS (ou superior LTS)
+
+- Instalar Docker versão 20.10.11 LTS (ou versão superior LTS)
+
+- Instalar Docker-compose versão 1.29.2 LTS (ou versão superior LTS)
+
+## 4. Clonando o repositório de back-end do projeto BACKEND USER
+
+- Clonar o repositório
+
+  - git clone <endereço-do-repositório>
+
+  - Abrir a pasta clonada
+    <br /><br />
+
+## 5. Configurações
+
+Configure o arquivo .env de acordo com as especificações desejadas
+
+DATABASE_HOST: O endereço IP ou o nome de host do servidor onde o banco de dados PostgreSQL está hospedado.
+
+DATABASE_PORT: A porta na qual o servidor PostgreSQL está ouvindo conexões. O padrão para o PostgreSQL é 5432.
+
+DATABASE_NAME: O nome do banco de dados que a aplicação está configurada para usar.
+
+DATABASE_USER: O nome de usuário usado para autenticar a conexão com o banco de dados PostgreSQL.
+
+DATABASE_PASSWORD: A senha associada ao usuário do banco de dados especificado.
+
+DATABASE_MY_SYNC: Uma variável que indica se a sincronização personalizada com o banco de dados está ativada ou não.
+
+HOST: O endereço IP ou o nome de host no qual o servidor da aplicação está sendo executado.
+
+PORT: A porta na qual o servidor da aplicação irá rodar.
+
+NODE_ENV: O ambiente de execução da aplicação. Neste caso, está definido como "produção", indicando que a aplicação está em produção.
+
+SECRET_KEY_ACCESS_TOKEN: Uma chave secreta usada para assinar e verificar tokens de acesso, provavelmente para autenticação ou autorização na aplicação. Esta chave é importante para garantir a segurança dos tokens de acesso gerados pela aplicação.
+
+- Porta utilizada no back-end: 3000
+
+## 6. Configuração de deploy back-end do projeto BACKEND USER usando o Docker
+
+Abra o terminal de comando e navegue até pasta do projeto e execute:
+
+```sh
+$ cd <diretorio_do_seu_projeto>
+$ docker compose up -d --build
+```
+
+Após o container ser criado, utilize o comando abaixo para ver os logs do contêiner:
+
+```sh
+$ docker logs <id_do_container> -f
+```
+
+Executar o comando abaixo para iniciar o projeto Backend User.
+
+```sh
+yarn start
+```
+
+## 7. Utilizando o Swagger
+
+Para acessar a documentação das rotas, acesse a url:
 
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+http://<endereço_do_backend>:<porta_do_backend>/swagger
 ```
 
-## Support
+#
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# Observações
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
-# backend-user
-# backend-user
+- Neste projeto, utilizei no backend DDD, conceitos de Clean Architecture e SOLID.

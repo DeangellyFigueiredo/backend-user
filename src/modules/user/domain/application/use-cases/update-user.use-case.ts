@@ -51,11 +51,9 @@ export class UpdateUserUseCase {
     }
 
     if (isActive !== undefined) {
-      console.log(isActive);
       user.value.user.isActive = isActive;
     }
 
-    console.log(user.value.user);
     await this.userRepositor.save(user.value.user);
 
     return success({

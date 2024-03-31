@@ -6,10 +6,8 @@ import {
   Patch,
   Param,
   Delete,
-  ConflictException,
   BadRequestException,
   HttpCode,
-  Query,
 } from '@nestjs/common';
 import { CreateUserUseCase } from 'src/modules/user/domain/application/use-cases/create-user.use-case';
 import { CreateUserDto } from '../dtos/create-user.dto';

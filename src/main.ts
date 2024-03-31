@@ -17,6 +17,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Backend User API')
     .setDescription('The Backend User API description')
+    .addBearerAuth()
     .setVersion('1.0')
     .addTag('INDT')
     .build();

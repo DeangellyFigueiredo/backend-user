@@ -8,7 +8,7 @@ export class UserModel {
   name: string;
   @Column({ length: 120 })
   surname: string;
-  @Column({ length: 255 })
+  @Column({ length: 255, unique: true })
   email: string;
   @Column({ length: 120 })
   password: string;

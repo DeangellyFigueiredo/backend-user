@@ -26,18 +26,26 @@ export class RoleGuard implements CanActivate {
       context.getClass(),
     ]);
 
-    if (isPublic || process.env.MOCK_SERVER === 'true') return true;
+    if (isPublic || process.env.NODE_ENV === 'development') return true;
     const request = context.switchToHttp().getRequest<Request>();
     const headers = request.headers as any;
 
     if (!headers.authorization) {
       throw new HttpException('Não autorizado', HttpStatus.UNAUTHORIZED);
     }
+
     const extractJwt = headers.authorization;
     if (!extractJwt) {
       throw new HttpException('Não autorizado', HttpStatus.UNAUTHORIZED);
     }
-    await this.authenticateUseCase.execute({ token: extractJwt });
+
+    const authenticated = await this.authenticateUseCase.execute({
+      token: extractJwt,
+    });
+
+    if (authenticated.isFailure())
+      throw new HttpException('Não autorizado', HttpStatus.UNAUTHORIZED);
+
     const user = await this.decodeTokenUseCase.execute({ token: extractJwt });
 
     if (user.isFailure())

@@ -22,9 +22,11 @@ import { DataToGraphcUseCase } from '../../domain/application/use-cases/data-to-
     },
     {
       provide: CreateUserUseCase,
-      useFactory: (userRepository: TypeOrmUserRepositoryImpl) =>
-        new CreateUserUseCase(userRepository),
-      inject: [TypeOrmUserRepositoryImpl],
+      useFactory: (
+        userRepository: TypeOrmUserRepositoryImpl,
+        findUserByEmailUseCase: FindUserByEmailUseCase,
+      ) => new CreateUserUseCase(userRepository, findUserByEmailUseCase),
+      inject: [TypeOrmUserRepositoryImpl, FindUserByEmailUseCase],
     },
     {
       provide: FindUserByIdUseCase,

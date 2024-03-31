@@ -25,11 +25,15 @@ export class DecodeTokenUseCase {
     const tokenExtracted = await this.extractTokenUseCase.execute({
       tokenToExtract: token,
     });
-
     if (!tokenExtracted.token) return failure(new TokenNotProvidesError());
 
-    const decodeToken = await this.jwtService.decode(tokenExtracted.token);
+    let decodeTokenUseCase;
+    try {
+      decodeTokenUseCase = await this.jwtService.decode(tokenExtracted.token);
+    } catch (error) {
+      return failure(new TokenNotProvidesError());
+    }
 
-    return success({ decodedToken: decodeToken });
+    return success({ decodedToken: decodeTokenUseCase });
   }
 }

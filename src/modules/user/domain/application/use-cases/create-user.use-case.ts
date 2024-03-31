@@ -1,8 +1,9 @@
-import { Either, success } from 'src/core/types/either';
+import { Either, failure, success } from 'src/core/types/either';
 import { EAccessLevel, User } from '../../enterprise/user.entity';
 import { EmailAlreadyRegisteredError } from './erros/email-already-registered-error';
 import { IUserRepository } from '../repositories/user.repository.contract';
 import * as bcrypt from 'bcrypt';
+import { FindUserByEmailUseCase } from './find-user-by-email.use-case';
 interface CreateUserUseCaseRequest {
   name: string;
   surname: string;
@@ -19,7 +20,10 @@ type CreateUserUseCaseResponse = Either<
 >;
 
 export class CreateUserUseCase {
-  constructor(private readonly userRepositor: IUserRepository) {}
+  constructor(
+    private readonly userRepositor: IUserRepository,
+    private readonly findUserByEmailUseCase: FindUserByEmailUseCase,
+  ) {}
 
   async execute({
     name,
@@ -35,6 +39,13 @@ export class CreateUserUseCase {
       password: bcrypt.hashSync(password, 10),
       accessLevel,
     });
+    const userEmailExists = await this.findUserByEmailUseCase.execute({
+      email,
+    });
+
+    if (userEmailExists.isSuccess()) {
+      return failure(new EmailAlreadyRegisteredError());
+    }
 
     const createUser = await this.userRepositor.create(user);
 

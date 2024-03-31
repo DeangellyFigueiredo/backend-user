@@ -65,7 +65,6 @@ export class TypeOrmUserRepositoryImpl implements IUserRepository {
     });
   }
   async save(data: User): Promise<void> {
-    console.log(data);
     await this.repository.update(data.id.toValue(), {
       name: data.name,
       surname: data.surname,
