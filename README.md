@@ -243,4 +243,6 @@ http://<endereço_do_backend>:<porta_do_backend>/swagger
 
 - Faz-se necessário adicionar apenas o DATABASE_HOST e HOST de acordo com o IP da máquina que irá rodar.
 
+- A aplicação está disponível online em http://indt.deangelly.com:3008/ 
+
 - Qualquer dúvida, pode mandar msg para o meu e-mail deangelly.figueiredo@gmail.com
