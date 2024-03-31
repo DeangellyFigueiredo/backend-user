@@ -173,7 +173,7 @@ HOST: O endereço IP ou o nome de host no qual o servidor da aplicação está s
 
 PORT: A porta na qual o servidor da aplicação irá rodar.
 
-NODE_ENV: O ambiente de execução da aplicação. Neste caso, está definido como "produção", indicando que a aplicação está em produção.
+NODE_ENV: O ambiente de execução da aplicação. Neste caso, está definido como "production", indicando que a aplicação está em produção. Para rodar sem precisar de credenciais utilize o "development".
 
 SECRET_KEY_ACCESS_TOKEN: Uma chave secreta usada para assinar e verificar tokens de acesso, provavelmente para autenticação ou autorização na aplicação. Esta chave é importante para garantir a segurança dos tokens de acesso gerados pela aplicação.
 
@@ -237,7 +237,7 @@ http://<endereço_do_backend>:<porta_do_backend>/swagger
 
 - Neste projeto, utilizei no backend DDD, conceitos de Clean Architecture e SOLID.
 
-- A documentação da API foi feita utilizando o Swagger
+- A documentação da API foi feita utilizando o Swagger. Para acessar, certifique-se que o NODE_ENV='development'
 
 - Para o seed, foi utilizado o typeorm-extensions
 
