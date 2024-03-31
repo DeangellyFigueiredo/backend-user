@@ -236,3 +236,11 @@ http://<endereço_do_backend>:<porta_do_backend>/swagger
 # Observações
 
 - Neste projeto, utilizei no backend DDD, conceitos de Clean Architecture e SOLID.
+
+- A documentação da API foi feita utilizando o Swagger
+
+- Para o seed, foi utilizado o typeorm-extensions
+
+- Faz-se necessário adicionar apenas o DATABASE_HOST e HOST de acordo com o IP da máquina que irá rodar.
+
+- Qualquer dúvida, pode mandar msg para o meu e-mail deangelly.figueiredo@gmail.com
