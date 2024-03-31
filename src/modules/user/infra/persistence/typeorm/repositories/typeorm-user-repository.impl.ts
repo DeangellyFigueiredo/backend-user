@@ -2,10 +2,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationParams } from 'src/core/repositories/pagination-params.contract';
 import { User } from 'src/modules/user/domain/enterprise/user.entity';
 import { Repository } from 'typeorm';
-import { UserModel } from '../models/user.model';
 import { IUserRepository } from 'src/modules/user/domain/application/repositories/user.repository.contract';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import { UserVo } from 'src/modules/user/domain/enterprise/value-objects/user-vo';
+import { UserModel } from '../models/user.entity';
 
 export class TypeOrmUserRepositoryImpl implements IUserRepository {
   constructor(

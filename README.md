@@ -179,6 +179,29 @@ SECRET_KEY_ACCESS_TOKEN: Uma chave secreta usada para assinar e verificar tokens
 
 - Porta utilizada no back-end: 3000
 
+### Populando o banco de dados
+
+O seed se encontra em src\seeds\user-seeder.ts
+
+Para popular o banco, basta rodar o seguinte comando :
+
+```bash
+yarn seed:run
+```
+
+Sempre que for executado o comando yarn seed:run, será criado 10 usuários aleatórios e o usuário administrador com as credenciais abaixo.
+
+```bash
+email: indt@gmail.com
+password: 123456
+```
+
+##Regras
+<br>
+Pode-se rodar o comando múltiplas vezes, ou até mesmo aumentar a quantidade de usuários criados por seed no arquivo user-seeder.ts.
+
+Sempre que não existir o usuário com email 'indt@gmail.com', ele será cirado caso rode o comando yarn seed:run
+
 ## 6. Configuração de deploy back-end do projeto BACKEND USER usando o Docker
 
 Abra o terminal de comando e navegue até pasta do projeto e execute:
