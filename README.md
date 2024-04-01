@@ -175,7 +175,7 @@ PORT: A porta na qual o servidor da aplicação irá rodar.
 
 NODE_ENV: O ambiente de execução da aplicação. Neste caso, está definido como "production", indicando que a aplicação está em produção. Para rodar sem precisar de credenciais utilize o "development".
 
-SECRET_KEY_ACCESS_TOKEN: Uma chave secreta usada para assinar e verificar tokens de acesso, provavelmente para autenticação ou autorização na aplicação. Esta chave é importante para garantir a segurança dos tokens de acesso gerados pela aplicação.
+SECRET_KEY_ACCESS_TOKEN: Uma chave secreta usada para assinar e verificar tokens de acesso. Esta chave é importante para garantir a segurança dos tokens de acesso gerados pela aplicação.
 
 - Porta utilizada no back-end: 3000
 
